@@ -162,7 +162,7 @@ export default {
 <style scoped>
 /* Update sidebar icons */
 .home-icon, .assets-icon, .profile-icon, .ai-icon {
-  background-image: url('../static/icon_home.png'), url('../static/icon_assets.png'), url('../static/icon_profile.png'), url('../static/icon_ai.png');
+  background-image: url(), url('../static/icon_assets.png'), url('../static/icon_profile.png'), url('../static/icon_ai.png');
   background-size: contain;
 }
 

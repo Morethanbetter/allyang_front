@@ -11,19 +11,22 @@
       <nav class="nav-menu">
         <ul>
           <li class="active">
-            <i class="home-icon"></i>
+            <img src="../static/home-icon.png" alt="首页" />
             <span>首页</span>
           </li>
           <li>
-            <i class="assets-icon"></i>
+            <img src="../static/assets-icon.png" alt="资产" />
+<!--            <i class="assets-icon"></i>-->
             <span>资产</span>
           </li>
           <li>
-            <i class="profile-icon"></i>
+            <img src="../static/profile-icon.png" alt="个人主页" />
+<!--            <i class="profile-icon"></i>-->
             <span>个人主页</span>
           </li>
           <li>
-            <i class="ai-icon"></i>
+            <img src="../static/assets-icon.png" alt="智能提创作" />
+<!--            <i class="ai-icon"></i>-->
             <span>智能体创作</span>
           </li>
         </ul>
