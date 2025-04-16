@@ -22,9 +22,7 @@
             <span>66</span>
           </div>
           <button class="membership-btn">开会员 限时95折</button>
-          <div class="avatar">
-            <img src="../assets/avatar9.jpg" alt="用户头像" />
-          </div>
+          <div class="avatar"></div>
         </div>
       </div>
     </div>
@@ -49,29 +47,20 @@
         <div class="section">
           <h3>选择分辨率</h3>
           <div class="resolution-options">
-            <div
-              class="resolution-option"
-              :class="{ active: selectedResolution === '1K' }"
-              @click="selectResolution('1K')"
-            >标清 1K</div>
-            <div
-              class="resolution-option"
-              :class="{ active: selectedResolution === '2K' }"
-              @click="selectResolution('2K')"
-            >高清 2K</div>
+            <div class="resolution-option">标清 1K</div>
+            <div class="resolution-option active">高清 2K</div>
           </div>
         </div>
 
         <div class="section">
           <h3>图片比例</h3>
           <div class="ratio-grid">
-            <div
-              v-for="ratio in ratioOptions"
-              :key="ratio"
-              class="ratio-option"
-              :class="{ active: selectedRatio === ratio }"
-              @click="selectRatio(ratio)"
-            >{{ ratio }}</div>
+            <div class="ratio-option">21:9</div>
+            <div class="ratio-option active">16:9</div>
+            <div class="ratio-option">3:2</div>
+            <div class="ratio-option">4:3</div>
+            <div class="ratio-option">1:1</div>
+            <div class="ratio-option">3:4</div>
           </div>
         </div>
 
@@ -79,11 +68,11 @@
           <h3>图片尺寸</h3>
           <div class="size-inputs">
             <div class="input-group">
-              <input type="text" v-model="imageWidth" placeholder="宽度" @change="updateDimensions" />
+              <input type="text" placeholder="宽度" />
               <span class="unit">px</span>
             </div>
             <div class="input-group">
-              <input type="text" v-model="imageHeight" placeholder="高度" @change="updateDimensions" />
+              <input type="text" placeholder="高度" />
               <span class="unit">px</span>
             </div>
           </div>
@@ -103,7 +92,6 @@
 
         <div class="canvas-controls">
           <div class="dropdown-control">
-            <span class="dropdown-text">选择模板</span>
             <i class="dropdown-icon"></i>
           </div>
 
@@ -119,7 +107,7 @@
             </button>
           </div>
 
-          <button class="generate-btn" @click="generateImage">
+          <button class="generate-btn">
             <i class="play-icon"></i>
             <span>生成</span>
           </button>
@@ -130,88 +118,17 @@
 </template>
 
 <script>
-import axios from 'axios'; // 确保你的项目中已安装axios
-
 export default {
   name: 'ThreeDGenerationView',
   data() {
     return {
-      selectedResolution: '2K',
-      selectedRatio: '16:9',
-      ratioOptions: ['21:9', '16:9', '3:2', '4:3', '1:1', '3:4'],
-      imageWidth: '',
-      imageHeight: '',
-      apiUrl: '/api/generate-image', // 替换为你的实际API端点
+      // Add reactive data here if needed
     }
   },
   methods: {
     goBack() {
       this.$router.push('/main');
-    },
-    selectResolution(resolution) {
-      this.selectedResolution = resolution;
-      this.updateDimensionsBasedOnRatio();
-      console.log(`分辨率已选择: ${resolution}`);
-    },
-    selectRatio(ratio) {
-      this.selectedRatio = ratio;
-      this.updateDimensionsBasedOnRatio();
-      console.log(`比例已选择: ${ratio}`);
-    },
-    updateDimensionsBasedOnRatio() {
-      // 根据分辨率和比例来设置默认尺寸
-      const [widthRatio, heightRatio] = this.selectedRatio.split(':').map(Number);
-
-      if (this.selectedResolution === '1K') {
-        // 1K分辨率的基础尺寸
-        if (widthRatio >= heightRatio) {
-          this.imageWidth = 1024;
-          this.imageHeight = Math.round((1024 / widthRatio) * heightRatio);
-        } else {
-          this.imageHeight = 1024;
-          this.imageWidth = Math.round((1024 / heightRatio) * widthRatio);
-        }
-      } else {
-        // 2K分辨率的基础尺寸
-        if (widthRatio >= heightRatio) {
-          this.imageWidth = 2048;
-          this.imageHeight = Math.round((2048 / widthRatio) * heightRatio);
-        } else {
-          this.imageHeight = 2048;
-          this.imageWidth = Math.round((2048 / heightRatio) * widthRatio);
-        }
-      }
-    },
-    updateDimensions() {
-      // 当用户手动更改尺寸时可以添加更多逻辑
-      console.log(`尺寸已更新: ${this.imageWidth}x${this.imageHeight}`);
-    },
-    async generateImage() {
-      try {
-        const params = {
-          resolution: this.selectedResolution,
-          ratio: this.selectedRatio,
-          width: this.imageWidth,
-          height: this.imageHeight
-        };
-
-        console.log('Sending parameters to API:', params);
-
-        // 调用API
-        const response = await axios.post(this.apiUrl, params);
-        console.log('API response:', response.data);
-
-        // 在这里处理API响应，例如显示生成的图像
-
-      } catch (error) {
-        console.error('生成图像时出错:', error);
-        // 添加适当的错误处理，例如显示错误消息
-      }
     }
-  },
-  mounted() {
-    // 组件加载时根据默认值设置尺寸
-    this.updateDimensionsBasedOnRatio();
   }
 }
 </script>
@@ -230,27 +147,28 @@ export default {
   background-color: #fff;
   border-bottom: 1px solid #eaeaea;
   padding: 0 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .nav-tabs {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 60px;
+  height: 56px;
 }
 
 .back-button {
   display: flex;
   align-items: center;
   cursor: pointer;
-  font-size: 15px;
+  font-size: 14px;
   color: #333;
 }
 
 .back-icon {
   display: inline-block;
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   background-image: url('../assets/back-icon.png');
   background-size: contain;
   margin-right: 5px;
@@ -268,12 +186,12 @@ export default {
   padding: 0 15px;
   cursor: pointer;
   color: #666;
-  font-size: 15px;
+  font-size: 14px;
   position: relative;
 }
 
 .tab.active {
-  color: #1da1f2;
+  color: #33adff;
   font-weight: 500;
 }
 
@@ -284,7 +202,7 @@ export default {
   left: 0;
   width: 100%;
   height: 2px;
-  background-color: #1da1f2;
+  background-color: #33adff;
 }
 
 .right-actions {
@@ -297,14 +215,14 @@ export default {
   display: flex;
   align-items: center;
   gap: 5px;
-  font-size: 14px;
+  font-size: 13px;
   color: #666;
 }
 
 .download-icon {
   display: inline-block;
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   background-image: url('../assets/download-icon.png');
   background-size: contain;
 }
@@ -313,33 +231,34 @@ export default {
   display: flex;
   align-items: center;
   gap: 5px;
-  font-size: 14px;
+  font-size: 13px;
   color: #666;
 }
 
 .credit-icon {
   display: inline-block;
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   background-image: url('../assets/credit-icon.png');
   background-size: contain;
 }
 
 .membership-btn {
-  background-color: #1da1f2;
+  background-color: #33adff;
   color: white;
   border: none;
   border-radius: 4px;
-  padding: 8px 16px;
+  padding: 6px 12px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 13px;
+  box-shadow: 0 2px 4px rgba(51, 173, 255, 0.2);
 }
 
-.avatar img {
-  width: 36px;
-  height: 36px;
+.avatar {
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
-  object-fit: cover;
+  background-color: #f0f0f0;
 }
 
 /* Main Content Styles */
@@ -351,43 +270,44 @@ export default {
 
 /* Sidebar Styles */
 .sidebar {
-  width: 280px;
+  width: 260px;
   background-color: #fff;
   border-right: 1px solid #eaeaea;
-  padding: 20px 0;
+  padding: 0;
 }
 
 .section {
-  padding: 15px 20px;
+  padding: 15px;
   border-bottom: 1px solid #f0f0f0;
 }
 
 .section h3 {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
   color: #333;
-  margin-bottom: 15px;
+  margin-bottom: 12px;
 }
 
 .model-selector {
-  margin-bottom: 10px;
+  margin-bottom: 0;
 }
 
 .selected-model {
   display: flex;
   align-items: center;
-  padding: 10px;
+  padding: 8px 10px;
   border: 1px solid #eaeaea;
   border-radius: 4px;
   cursor: pointer;
+  background-color: #fff;
 }
 
 .model-icon {
-  width: 24px;
-  height: 24px;
-  background-color: #1da1f2;
+  width: 20px;
+  height: 20px;
+  background-color: #33adff;
   border-radius: 4px;
-  margin-right: 10px;
+  margin-right: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -396,67 +316,67 @@ export default {
 }
 
 .model-icon img {
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
 }
 
 .dropdown-icon {
   margin-left: auto;
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   background-image: url('../assets/dropdown-icon.png');
   background-size: contain;
 }
 
 .resolution-options {
   display: flex;
-  gap: 10px;
+  gap: 8px;
 }
 
 .resolution-option {
   flex: 1;
   text-align: center;
-  padding: 8px;
+  padding: 6px 0;
   border: 1px solid #eaeaea;
   border-radius: 4px;
-  font-size: 14px;
+  font-size: 13px;
   cursor: pointer;
   color: #666;
-  transition: all 0.2s ease;
+  background-color: #fff;
 }
 
 .resolution-option.active {
-  background-color: #1da1f2;
+  background-color: #33adff;
   color: white;
-  border-color: #1da1f2;
+  border-color: #33adff;
 }
 
 .ratio-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+  gap: 8px;
 }
 
 .ratio-option {
   text-align: center;
-  padding: 8px;
+  padding: 6px 0;
   border: 1px solid #eaeaea;
   border-radius: 4px;
-  font-size: 14px;
+  font-size: 13px;
   cursor: pointer;
   color: #666;
-  transition: all 0.2s ease;
+  background-color: #fff;
 }
 
 .ratio-option.active {
-  background-color: #1da1f2;
+  background-color: #33adff;
   color: white;
-  border-color: #1da1f2;
+  border-color: #33adff;
 }
 
 .size-inputs {
   display: flex;
-  gap: 10px;
+  gap: 8px;
 }
 
 .input-group {
@@ -466,15 +386,16 @@ export default {
 
 .input-group input {
   width: 100%;
-  padding: 8px 8px 8px 8px;
+  padding: 6px 25px 6px 10px;
   border: 1px solid #eaeaea;
   border-radius: 4px;
-  font-size: 14px;
+  font-size: 13px;
+  background-color: #fff;
 }
 
 .unit {
   position: absolute;
-  right: 8px;
+  right: 10px;
   top: 50%;
   transform: translateY(-50%);
   color: #999;
@@ -499,24 +420,25 @@ export default {
 
 .placeholder-canvas {
   width: 100%;
-  max-width: 900px;
-  height: 450px;
-  border: 1px dashed #ccc;
+  max-width: 860px;
+  min-height: 260px;
+  border: 1px solid #e0e0e0;
   border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
 }
 
 .placeholder-text {
   text-align: center;
   color: #999;
-  font-size: 16px;
+  font-size: 14px;
 }
 
 .placeholder-text .subtext {
-  font-size: 14px;
+  font-size: 12px;
   margin-top: 5px;
   color: #aaa;
 }
@@ -525,34 +447,30 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 20px;
+  padding: 0;
+  margin-top: 10px;
 }
 
 .dropdown-control {
   display: flex;
   align-items: center;
-  gap: 5px;
-  padding: 8px 16px;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
   border: 1px solid #eaeaea;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 14px;
-  color: #666;
   background-color: #fff;
-}
-
-.dropdown-text {
-  margin-right: 5px;
 }
 
 .media-controls {
   display: flex;
-  gap: 10px;
+  gap: 8px;
 }
 
 .media-btn {
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   border: 1px solid #eaeaea;
   border-radius: 4px;
   background-color: #fff;
@@ -560,11 +478,12 @@ export default {
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  padding: 0;
 }
 
 .text-icon, .image-icon, .video-icon {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   background-size: contain;
 }
 
@@ -584,20 +503,21 @@ export default {
   display: flex;
   align-items: center;
   gap: 5px;
-  background-color: #1da1f2;
+  background-color: #33adff;
   color: white;
   border: none;
   border-radius: 4px;
-  padding: 10px 24px;
+  padding: 8px 16px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
+  box-shadow: 0 2px 4px rgba(51, 173, 255, 0.2);
 }
 
 .play-icon {
   display: inline-block;
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   background-image: url('../assets/play-icon.png');
   background-size: contain;
 }

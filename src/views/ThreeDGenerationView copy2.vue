@@ -49,29 +49,20 @@
         <div class="section">
           <h3>选择分辨率</h3>
           <div class="resolution-options">
-            <div
-              class="resolution-option"
-              :class="{ active: selectedResolution === '1K' }"
-              @click="selectResolution('1K')"
-            >标清 1K</div>
-            <div
-              class="resolution-option"
-              :class="{ active: selectedResolution === '2K' }"
-              @click="selectResolution('2K')"
-            >高清 2K</div>
+            <div class="resolution-option">标清 1K</div>
+            <div class="resolution-option active">高清 2K</div>
           </div>
         </div>
 
         <div class="section">
           <h3>图片比例</h3>
           <div class="ratio-grid">
-            <div
-              v-for="ratio in ratioOptions"
-              :key="ratio"
-              class="ratio-option"
-              :class="{ active: selectedRatio === ratio }"
-              @click="selectRatio(ratio)"
-            >{{ ratio }}</div>
+            <div class="ratio-option">21:9</div>
+            <div class="ratio-option active">16:9</div>
+            <div class="ratio-option">3:2</div>
+            <div class="ratio-option">4:3</div>
+            <div class="ratio-option">1:1</div>
+            <div class="ratio-option">3:4</div>
           </div>
         </div>
 
@@ -79,11 +70,11 @@
           <h3>图片尺寸</h3>
           <div class="size-inputs">
             <div class="input-group">
-              <input type="text" v-model="imageWidth" placeholder="宽度" @change="updateDimensions" />
+              <input type="text" placeholder="宽度" />
               <span class="unit">px</span>
             </div>
             <div class="input-group">
-              <input type="text" v-model="imageHeight" placeholder="高度" @change="updateDimensions" />
+              <input type="text" placeholder="高度" />
               <span class="unit">px</span>
             </div>
           </div>
@@ -119,7 +110,7 @@
             </button>
           </div>
 
-          <button class="generate-btn" @click="generateImage">
+          <button class="generate-btn">
             <i class="play-icon"></i>
             <span>生成</span>
           </button>
@@ -130,88 +121,17 @@
 </template>
 
 <script>
-import axios from 'axios'; // 确保你的项目中已安装axios
-
 export default {
   name: 'ThreeDGenerationView',
   data() {
     return {
-      selectedResolution: '2K',
-      selectedRatio: '16:9',
-      ratioOptions: ['21:9', '16:9', '3:2', '4:3', '1:1', '3:4'],
-      imageWidth: '',
-      imageHeight: '',
-      apiUrl: '/api/generate-image', // 替换为你的实际API端点
+      // Add reactive data here if needed
     }
   },
   methods: {
     goBack() {
       this.$router.push('/main');
-    },
-    selectResolution(resolution) {
-      this.selectedResolution = resolution;
-      this.updateDimensionsBasedOnRatio();
-      console.log(`分辨率已选择: ${resolution}`);
-    },
-    selectRatio(ratio) {
-      this.selectedRatio = ratio;
-      this.updateDimensionsBasedOnRatio();
-      console.log(`比例已选择: ${ratio}`);
-    },
-    updateDimensionsBasedOnRatio() {
-      // 根据分辨率和比例来设置默认尺寸
-      const [widthRatio, heightRatio] = this.selectedRatio.split(':').map(Number);
-
-      if (this.selectedResolution === '1K') {
-        // 1K分辨率的基础尺寸
-        if (widthRatio >= heightRatio) {
-          this.imageWidth = 1024;
-          this.imageHeight = Math.round((1024 / widthRatio) * heightRatio);
-        } else {
-          this.imageHeight = 1024;
-          this.imageWidth = Math.round((1024 / heightRatio) * widthRatio);
-        }
-      } else {
-        // 2K分辨率的基础尺寸
-        if (widthRatio >= heightRatio) {
-          this.imageWidth = 2048;
-          this.imageHeight = Math.round((2048 / widthRatio) * heightRatio);
-        } else {
-          this.imageHeight = 2048;
-          this.imageWidth = Math.round((2048 / heightRatio) * widthRatio);
-        }
-      }
-    },
-    updateDimensions() {
-      // 当用户手动更改尺寸时可以添加更多逻辑
-      console.log(`尺寸已更新: ${this.imageWidth}x${this.imageHeight}`);
-    },
-    async generateImage() {
-      try {
-        const params = {
-          resolution: this.selectedResolution,
-          ratio: this.selectedRatio,
-          width: this.imageWidth,
-          height: this.imageHeight
-        };
-
-        console.log('Sending parameters to API:', params);
-
-        // 调用API
-        const response = await axios.post(this.apiUrl, params);
-        console.log('API response:', response.data);
-
-        // 在这里处理API响应，例如显示生成的图像
-
-      } catch (error) {
-        console.error('生成图像时出错:', error);
-        // 添加适当的错误处理，例如显示错误消息
-      }
     }
-  },
-  mounted() {
-    // 组件加载时根据默认值设置尺寸
-    this.updateDimensionsBasedOnRatio();
   }
 }
 </script>
@@ -422,7 +342,6 @@ export default {
   font-size: 14px;
   cursor: pointer;
   color: #666;
-  transition: all 0.2s ease;
 }
 
 .resolution-option.active {
@@ -445,7 +364,6 @@ export default {
   font-size: 14px;
   cursor: pointer;
   color: #666;
-  transition: all 0.2s ease;
 }
 
 .ratio-option.active {
@@ -466,7 +384,7 @@ export default {
 
 .input-group input {
   width: 100%;
-  padding: 8px 8px 8px 8px;
+  padding: 8px 30px 8px 10px;
   border: 1px solid #eaeaea;
   border-radius: 4px;
   font-size: 14px;
@@ -474,7 +392,7 @@ export default {
 
 .unit {
   position: absolute;
-  right: 8px;
+  right: 10px;
   top: 50%;
   transform: translateY(-50%);
   color: #999;
