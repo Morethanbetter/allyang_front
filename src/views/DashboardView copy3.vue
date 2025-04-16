@@ -56,7 +56,7 @@
           <div class="category-card">
             <h2>AI 3D创作</h2>
             <p>轻松创建高质量3D内容</p>
-            <button class="category-btn" @click="goto3DGeneration">3D生成</button>
+            <button class="category-btn">3D生成</button>
           </div>
           <div class="category-card">
             <h2>AI 品牌设计</h2>
@@ -158,9 +158,7 @@ export default {
     }
   },
   methods: {
-    goto3DGeneration() {
-      this.$router.push('/3d-generation');
-    }
+    // Add methods here if needed
   }
 }
 </script>

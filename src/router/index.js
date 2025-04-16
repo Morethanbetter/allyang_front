@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import LoginView from '../views/LoginView.vue'
 import DashboardView from "../views/DashboardView.vue";
-
+import ThreeDGenerationView from '../views/ThreeDGenerationView.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -14,6 +14,11 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: LoginView
+    },
+    {
+      path: '/3d-generation',
+      name: 'ThreeDGeneration',
+      component: ThreeDGenerationView
     },
     {
       path: '/main',
@@ -43,6 +48,7 @@ const router = createRouter({
         }
       ]
     }
+
   ]
 })
 
