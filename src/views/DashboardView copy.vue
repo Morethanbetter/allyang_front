@@ -1,52 +1,49 @@
 <template>
   <div class="dashboard-container">
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <!-- Logo -->
+    <!-- Header -->
+    <header class="header">
       <div class="logo">
         <img src="../static/home_logo.png" alt="数智应用实验室" />
       </div>
-
-      <!-- Navigation -->
-      <nav class="nav-menu">
-        <ul>
-          <li class="active">
-            <i class="home-icon"></i>
-            <span>首页</span>
-          </li>
-          <li>
-            <i class="assets-icon"></i>
-            <span>资产</span>
-          </li>
-          <li>
-            <i class="profile-icon"></i>
-            <span>个人主页</span>
-          </li>
-          <li>
-            <i class="ai-icon"></i>
-            <span>智能体创作</span>
-          </li>
-        </ul>
-      </nav>
-    </div>
+      <div class="search-bar">
+        <input type="text" placeholder="搜索作品、创作者" />
+        <i class="search-icon"></i>
+      </div>
+      <div class="actions">
+        <button class="create-btn">
+          <i class="plus-icon"></i>
+          创建作品
+        </button>
+        <div class="avatar">
+          <img src="../static/home_logo.png" alt="用户头像" />
+        </div>
+      </div>
+    </header>
 
     <!-- Main Content -->
     <div class="main-content">
-      <!-- Header -->
-      <div class="header">
-        <div class="search-bar">
-          <i class="search-icon"></i>
-          <input type="text" placeholder="搜索作品、创作者" />
-        </div>
-        <div class="actions">
-          <button class="create-btn">
-            <i class="plus-icon"></i>
-            创建作品
-          </button>
-          <div class="avatar">
-            <img src="../static/home_logo.png" alt="用户头像" />
-          </div>
-        </div>
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <nav>
+          <ul>
+            <li class="active">
+              <i class="home-icon"></i>
+              <span>首页</span>
+            </li>
+            <li>
+              <i class="assets-icon"></i>
+              <span>资产</span>
+            </li>
+            <li>
+              <i class="profile-icon"></i>
+              <span>个人主页</span>
+            </li>
+            <li>
+              <i class="ai-icon"></i>
+              <span>智能体创作</span>
+            </li>
+          </ul>
+        </nav>
       </div>
 
       <!-- Content Area -->
@@ -100,7 +97,7 @@
           </div>
           <div class="gallery-item">
             <div class="image">
-              <img src="../static/" alt="山水意境" />
+              <img src="../static/home_logo.png" alt="山水意境" />
             </div>
             <div class="info">
               <h3>山水意境</h3>
@@ -166,89 +163,37 @@ export default {
 <style scoped>
 .dashboard-container {
   display: flex;
+  flex-direction: column;
   min-height: 100vh;
   background-color: #f5f5f7;
-}
-
-/* Sidebar Styles */
-.sidebar {
-  width: 240px;
-  background-color: #f5f5f7;
-  border-right: 1px solid #eaeaea;
-  padding-top: 20px;
-}
-
-.logo {
-  padding: 0 40px 40px 40px;
-}
-
-.logo img {
-  height: 40px;
-}
-
-.nav-menu ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.nav-menu li {
-  display: flex;
-  align-items: center;
-  padding: 12px 20px;
-  cursor: pointer;
-  color: #666;
-}
-
-.nav-menu li.active {
-  background-color: #fff;
-  color: #1da1f2;
-  border-left: 3px solid #1da1f2;
-}
-
-.nav-menu li i {
-  width: 20px;
-  height: 20px;
-  margin-right: 12px;
-}
-
-.home-icon, .assets-icon, .profile-icon, .ai-icon {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-}
-
-/* Main Content Styles */
-.main-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
 }
 
 /* Header Styles */
 .header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 20px 24px;
+  padding: 12px 24px;
   background-color: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  height: 36px;
 }
 
 .search-bar {
   display: flex;
   align-items: center;
+  margin-left: 24px;
   background-color: #f5f5f7;
   border-radius: 20px;
   padding: 8px 16px;
   width: 300px;
-}
-
-.search-icon {
-  width: 16px;
-  height: 16px;
-  background-image: url('../static/home_logo.png');
-  background-size: contain;
-  margin-right: 8px;
 }
 
 .search-bar input {
@@ -259,9 +204,17 @@ export default {
   font-size: 14px;
 }
 
+.search-icon {
+  width: 16px;
+  height: 16px;
+  background-image: url('../static/home_logo.png');
+  background-size: contain;
+}
+
 .actions {
   display: flex;
   align-items: center;
+  margin-left: auto;
   gap: 16px;
 }
 
@@ -279,9 +232,10 @@ export default {
 }
 
 .plus-icon {
-  display: inline-block;
   width: 16px;
   height: 16px;
+  background-image: url('../static/home_logo.png');
+  background-size: contain;
 }
 
 .avatar img {
@@ -289,6 +243,43 @@ export default {
   height: 36px;
   border-radius: 50%;
   object-fit: cover;
+}
+
+/* Main Content Styles */
+.main-content {
+  display: flex;
+  flex: 1;
+}
+
+/* Sidebar Styles */
+.sidebar {
+  width: 240px;
+  background-color: #fff;
+  border-right: 1px solid #eaeaea;
+}
+
+.sidebar nav ul {
+  list-style: none;
+  padding: 16px 0;
+}
+
+.sidebar nav li {
+  display: flex;
+  align-items: center;
+  padding: 12px 24px;
+  cursor: pointer;
+  color: #666;
+}
+
+.sidebar nav li.active {
+  color: #1da1f2;
+  background-color: rgba(29, 161, 242, 0.1);
+}
+
+.sidebar nav li i {
+  width: 20px;
+  height: 20px;
+  margin-right: 12px;
 }
 
 /* Content Area Styles */
@@ -404,7 +395,6 @@ export default {
 }
 
 .heart-icon {
-  display: inline-block;
   width: 16px;
   height: 16px;
   background-image: url('../static/home_logo.png');
