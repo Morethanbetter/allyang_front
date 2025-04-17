@@ -1,22 +1,11 @@
 import axios from 'axios'
 
-// Determine the base URL based on the environment
-const getBaseURL = () => {
-  // For production, use the actual API server
-  if (import.meta.env.PROD) {
-    return 'http://192.187.5.122:8004/api'
-  }
-  
-  // For development, use the proxy defined in vite.config.js
-  return 'http://127.0.0.1:8000/api'
-}
-
 const service = axios.create({
-  baseURL: getBaseURL(),
+  baseURL: '/api',
   timeout: 15000
 })
 
-// Request interceptor
+// 请求拦截器
 service.interceptors.request.use(
   config => {
     const token = localStorage.getItem('token')
@@ -31,16 +20,16 @@ service.interceptors.request.use(
   }
 )
 
-// Response interceptor
+// 响应拦截器
 service.interceptors.response.use(
   response => {
     const res = response.data
 
-    // If the status code is not 200, the API request has an error
+    // 如果返回的状态码不是200，说明接口请求有误
     if (res.code !== 200) {
-      // Handle specific errors, such as 401 unauthorized
+      // 处理特定错误，如401未授权
       if (res.code === 401) {
-        // Clear token and redirect to login page
+        // 清除token并重定向到登录页
         localStorage.removeItem('token')
         window.location.href = '/login'
       }
@@ -51,7 +40,7 @@ service.interceptors.response.use(
   },
   error => {
     console.error('Response error:', error)
-    // Handle network errors
+    // 处理网络错误
     if (error.response && error.response.status === 401) {
       localStorage.removeItem('token')
       window.location.href = '/login'

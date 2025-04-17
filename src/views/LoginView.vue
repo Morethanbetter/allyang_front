@@ -191,10 +191,14 @@
 </template>
 
 <script setup>
+// import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
+// import { useRouter } from 'vue-router';
+// import { useAuthStore } from '../stores/useAuthStore';
+// import { sendVerificationCode } from '../api/auth';
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../stores/useAuthStore';
-import { sendVerificationCode } from '../api/auth';
+import {sendVerificationCode, sendEmailVerificationCode} from '../api/auth';
 
 const router = useRouter();
 const authStore = useAuthStore();
@@ -301,24 +305,44 @@ onBeforeUnmount(() => {
 });
 
 // 发送验证码
+// Updated sendCode function to handle both phone and email verification
 async function sendCode() {
   if (codeSending.value || countdown.value > 0) return;
 
-  if (!phone.value) {
-    alert('请输入手机号');
-    return;
-  }
-
   try {
     codeSending.value = true;
-    await sendVerificationCode(selectedCountryCode.value + phone.value);
 
-    // 开始倒计时
+    if (loginType.value === 'phone') {
+      if (!phone.value) {
+        alert('请输入手机号');
+        return;
+      }
+
+      // Call the phone verification API
+      await sendVerificationCode(selectedCountryCode.value + phone.value);
+    } else {
+      if (!email.value) {
+        alert('请输入邮箱');
+        return;
+      }
+
+      // Validate email format
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailPattern.test(email.value)) {
+        alert('请输入有效的邮箱地址');
+        return;
+      }
+
+      // Call the email verification API
+      await sendEmailVerificationCode(email.value);
+    }
+
+    // Start countdown
     countdown.value = 60;
     sessionStorage.setItem('countdown', countdown.value.toString());
     startCountdown();
   } catch (error) {
-    alert('发送验证码失败: ' + error.message);
+    alert('发送验证码失败: ' + (error.message || '未知错误'));
   } finally {
     codeSending.value = false;
   }
