@@ -2,7 +2,7 @@ import request from '../utils/request'
 
 export function login(data) {
   return request({
-    url: '/user/login',
+    url: '/user/login/',
     method: 'post',
     data
   })
@@ -32,7 +32,7 @@ export function logout() {
 
 export function sendVerificationCode(phone) {
   return request({
-    url: '/user/sms/send-code',  // Removed trailing slash to avoid double slash issues
+    url: '/user/sms/send-code/',  // Removed trailing slash to avoid double slash issues
     method: 'post',
     data: { phone }
   })

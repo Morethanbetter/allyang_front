@@ -91,7 +91,7 @@
               </div>
             </div>
 
-            <!-- 密码输入 -->
+            <!-- 邀请码 -->
             <div class="form-group">
               <input
                 type="text"
@@ -409,7 +409,7 @@ async function handleLogin() {
       const userData = {
         phone: selectedCountryCode.value + phone.value,
         code: verificationCode.value,
-        password: password.value,
+        password: inviteCode.value,
         rememberMe: rememberMe.value
       };
 

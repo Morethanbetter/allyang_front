@@ -14,8 +14,8 @@ export const useAuthStore = defineStore("auth", () => {
   async function loginUser(credentials) {
     try {
       const response = await login(credentials)
-
-      if (response.success) {
+      console.log("Login response-test1:", response)
+      if (response.code === 200) {
         user.value = response.user
         token.value = response.token
 
@@ -29,7 +29,7 @@ export const useAuthStore = defineStore("auth", () => {
         return { success: false, error: response.message || "登录失败" }
       }
     } catch (error) {
-      console.error("Login error:", error)
+      console.error("Login error---1:", error)
       return { success: false, error: error.message || "登录失败" }
     }
   }
@@ -37,7 +37,7 @@ export const useAuthStore = defineStore("auth", () => {
   async function registerUser(userData) {
     try {
       const response = await register(userData)
-
+    console.log("Register response:", response)
       if (response.success) {
         user.value = response.user
         token.value = response.token

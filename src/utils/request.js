@@ -35,7 +35,7 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   response => {
     const res = response.data
-
+    console.info('Response---1:', res)
     // If the status code is not 200, the API request has an error
     if (res.code !== 200) {
       // Handle specific errors, such as 401 unauthorized
