@@ -32,7 +32,7 @@ export function logout() {
 
 export function sendVerificationCode(phone) {
   return request({
-    url: '/auth/verification-code',
+    url: '/user/sms/send-code/',
     method: 'post',
     data: { phone }
   })

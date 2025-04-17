@@ -407,7 +407,7 @@ async function handleLogin() {
     }
 
     if (result.success) {
-      router.push('/main/chat');
+      router.push('/main');
     } else {
       alert(result.error || '操作失败');
     }

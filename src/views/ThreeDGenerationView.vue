@@ -40,7 +40,7 @@
               <div class="model-icon">
                 <img src="../assets/seedream-icon.png" alt="Seedream" />
               </div>
-              <span>by Seedream 3.0</span>
+              <span>数智应用实验室智能体</span>
               <i class="dropdown-icon"></i>
             </div>
           </div>
@@ -101,28 +101,32 @@
           </div>
         </div>
 
-        <div class="canvas-controls">
-          <div class="dropdown-control">
-            <span class="dropdown-text">选择模板</span>
-            <i class="dropdown-icon"></i>
-          </div>
+        <div class="canvas-controls-wrapper">
+          <div class="canvas-controls">
+            <div class="controls-left">
+              <div class="dropdown-control">
+                <span class="dropdown-text">选择模板</span>
+                <i class="dropdown-icon"></i>
+              </div>
 
-          <div class="media-controls">
-            <button class="media-btn">
-              <i class="text-icon"></i>
-            </button>
-            <button class="media-btn">
-              <i class="image-icon"></i>
-            </button>
-            <button class="media-btn">
-              <i class="video-icon"></i>
+              <div class="media-controls">
+                <button class="media-btn">
+                  <i class="text-icon"></i>
+                </button>
+                <button class="media-btn">
+                  <i class="image-icon"></i>
+                </button>
+                <button class="media-btn">
+                  <i class="video-icon"></i>
+                </button>
+              </div>
+            </div>
+
+            <button class="generate-btn" @click="generateImage">
+              <i class="play-icon"></i>
+              <span>生成</span>
             </button>
           </div>
-
-          <button class="generate-btn" @click="generateImage">
-            <i class="play-icon"></i>
-            <span>生成</span>
-          </button>
         </div>
       </div>
     </div>
@@ -487,14 +491,14 @@ export default {
   padding: 20px;
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
 }
 
 .canvas-container {
-  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 20px;
+  margin-bottom: 0;
 }
 
 .placeholder-canvas {
@@ -502,7 +506,7 @@ export default {
   max-width: 900px;
   height: 450px;
   border: 1px dashed #ccc;
-  border-radius: 8px;
+  border-radius: 8px 8px 0 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -521,11 +525,30 @@ export default {
   color: #aaa;
 }
 
+/* 新增包装容器，确保控制区与canvas对齐 */
+.canvas-controls-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto; /* 新增：实现水平居中 */
+}
+
 .canvas-controls {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 20px;
+  width: 100%;
+  background-color: #fff;
+  border-radius: 0 0 8px 8px;
+  padding: 12px 16px;
+  border-top: 1px solid #eaeaea;
+}
+
+.controls-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 
 .dropdown-control {
