@@ -84,7 +84,8 @@
                 <button
                   @click="sendCode"
                   class="send-code-btn"
-                  :disabled="codeSending"
+                  :disabled="codeSending || countdown > 0"
+                  :class="{ 'disabled-btn': codeSending || countdown > 0 }"
                 >
                   {{ codeButtonText }}
                 </button>
@@ -126,7 +127,8 @@
                 <button
                   @click="sendCode"
                   class="send-code-btn"
-                  :disabled="codeSending"
+                  :disabled="codeSending || countdown > 0"
+                  :class="{ 'disabled-btn': codeSending || countdown > 0 }"
                 >
                   {{ codeButtonText }}
                 </button>
@@ -191,10 +193,6 @@
 </template>
 
 <script setup>
-// import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
-// import { useRouter } from 'vue-router';
-// import { useAuthStore } from '../stores/useAuthStore';
-// import { sendVerificationCode } from '../api/auth';
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../stores/useAuthStore';
@@ -284,6 +282,13 @@ onMounted(() => {
   let savedCountdown = sessionStorage.getItem('countdown');
   if (savedCountdown) {
     savedCountdown = parseInt(savedCountdown);
+
+    // 检查保存的倒计时是否有效（可能是之前的会话保存的）
+    const savedTime = sessionStorage.getItem('countdownTimestamp');
+    if (savedTime) {
+      const elapsedSeconds = Math.floor((Date.now() - parseInt(savedTime)) / 1000);
+      savedCountdown = Math.max(0, savedCountdown - elapsedSeconds);
+    }
   } else {
     savedCountdown = 0;
   }
@@ -305,7 +310,6 @@ onBeforeUnmount(() => {
 });
 
 // 发送验证码
-// Updated sendCode function to handle both phone and email verification
 async function sendCode() {
   if (codeSending.value || countdown.value > 0) return;
 
@@ -315,6 +319,7 @@ async function sendCode() {
     if (loginType.value === 'phone') {
       if (!phone.value) {
         alert('请输入手机号');
+        codeSending.value = false;
         return;
       }
 
@@ -323,6 +328,7 @@ async function sendCode() {
     } else {
       if (!email.value) {
         alert('请输入邮箱');
+        codeSending.value = false;
         return;
       }
 
@@ -330,6 +336,7 @@ async function sendCode() {
       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailPattern.test(email.value)) {
         alert('请输入有效的邮箱地址');
+        codeSending.value = false;
         return;
       }
 
@@ -340,9 +347,10 @@ async function sendCode() {
     // Start countdown
     countdown.value = 60;
     sessionStorage.setItem('countdown', countdown.value.toString());
+    sessionStorage.setItem('countdownTimestamp', Date.now().toString());
     startCountdown();
   } catch (error) {
-    alert('发送验证码失败: ' + (error.message || '未知错误'));
+    alert('发送验证码结果: ' + (error.message || '未知错误'));
   } finally {
     codeSending.value = false;
   }
@@ -359,6 +367,7 @@ function startCountdown() {
       clearInterval(timer);
       timer = null;
       sessionStorage.removeItem('countdown');
+      sessionStorage.removeItem('countdownTimestamp');
     }
   }, 1000);
 }
@@ -657,6 +666,13 @@ async function handleLogin() {
 .send-code-btn:disabled {
   background-color: #b0bec5;
   cursor: not-allowed;
+}
+
+/* 新增样式用于禁用状态 */
+.disabled-btn {
+  background-color: #b0bec5 !important;
+  cursor: not-allowed !important;
+  opacity: 0.7;
 }
 
 /* 密码输入 */
