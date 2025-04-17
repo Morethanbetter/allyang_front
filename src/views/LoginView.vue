@@ -224,7 +224,9 @@ const showCountryCodeDropdown = ref(false);
 // 验证码发送状态
 const codeSending = ref(false);
 const countdown = ref(0);
+// 用于确保倒计时文本响应式更新
 const codeButtonText = computed(() => {
+  console.log("Computing button text, countdown:", countdown.value);
   return countdown.value > 0 ? `${countdown.value}秒后重新获取` : '获取验证码';
 });
 
@@ -315,41 +317,28 @@ async function sendCode() {
 
   try {
     codeSending.value = true;
+    console.log("开始发送验证码");
 
     if (loginType.value === 'phone') {
-      if (!phone.value) {
-        alert('请输入手机号');
-        codeSending.value = false;
-        return;
-      }
-
-      // Call the phone verification API
+      console.log("发送手机验证码到:", selectedCountryCode.value + phone.value);
+      // 调用 API 发送验证码
       await sendVerificationCode(selectedCountryCode.value + phone.value);
+      console.log("手机验证码发送成功");
     } else {
-      if (!email.value) {
-        alert('请输入邮箱');
-        codeSending.value = false;
-        return;
-      }
-
-      // Validate email format
-      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailPattern.test(email.value)) {
-        alert('请输入有效的邮箱地址');
-        codeSending.value = false;
-        return;
-      }
-
-      // Call the email verification API
+      console.log("发送邮箱验证码到:", email.value);
+      // 调用 API 发送验证码
       await sendEmailVerificationCode(email.value);
+      console.log("邮箱验证码发送成功");
     }
 
-    // Start countdown
+    // 开始倒计时
     countdown.value = 60;
+    console.log("设置倒计时:", countdown.value);
     sessionStorage.setItem('countdown', countdown.value.toString());
     sessionStorage.setItem('countdownTimestamp', Date.now().toString());
     startCountdown();
   } catch (error) {
+    console.error("发送验证码失败:", error);
     alert('发送验证码结果: ' + (error.message || '未知错误'));
   } finally {
     codeSending.value = false;
@@ -357,13 +346,17 @@ async function sendCode() {
 }
 
 function startCountdown() {
-  if (timer) clearInterval(timer);
+  if (timer) {
+    console.log("Clearing existing timer");
+    clearInterval(timer);
+  }
 
   timer = setInterval(() => {
     countdown.value--;
     sessionStorage.setItem('countdown', countdown.value.toString());
 
     if (countdown.value <= 0) {
+      console.log("Countdown finished");
       clearInterval(timer);
       timer = null;
       sessionStorage.removeItem('countdown');

@@ -30,7 +30,7 @@ export function logout() {
   })
 }
 
-export function sendVerificationCode(phone) {
+export async function sendVerificationCode(phone) {
   return request({
     url: '/user/sms/send-code/',  // Removed trailing slash to avoid double slash issues
     method: 'post',
