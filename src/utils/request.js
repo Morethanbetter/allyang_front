@@ -4,7 +4,7 @@ import axios from 'axios'
 const getBaseURL = () => {
   // For production, use the actual API server
   if (import.meta.env.PROD) {
-    return 'http://192.187.5.122:8004/api'
+    return 'http://ai.allyang.com/api'
   }
   
   // For development, use the proxy defined in vite.config.js
